@@ -1,101 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Subscription</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/i18next@21.6.0/i18next.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="carousel">
-        <div class="carousel-track">
-            <div class="carousel-slide slide-3">
-                <button class="restore-btn" id="restore-btn" onclick="window.webkit.messageHandlers.restoreTapped.postMessage('')">
-                    Restore
-                </button>
-                <button class="close-btn" onclick="window.webkit.messageHandlers.closeScreen.postMessage('')">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g opacity="0.7" filter="url(#filter0_d_42378_20037)">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.16797 4.43209C4.9649 4.22902 4.63565 4.22902 4.43258 4.43209C4.22951 4.63516 4.22951 4.96441 4.43258 5.16748L8.86488 9.59979L4.43258 14.0321C4.22951 14.2352 4.22951 14.5644 4.43258 14.7675C4.63565 14.9706 4.9649 14.9706 5.16797 14.7675L9.60027 10.3352L14.0326 14.7675C14.2357 14.9706 14.5649 14.9706 14.768 14.7675C14.971 14.5644 14.971 14.2352 14.768 14.0321L10.3357 9.59979L14.768 5.16748C14.971 4.96441 14.971 4.63516 14.768 4.43209C14.5649 4.22902 14.2357 4.22902 14.0326 4.43209L9.60027 8.86439L5.16797 4.43209Z" fill="#000001"/>
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.16797 4.43209C4.9649 4.22902 4.63565 4.22902 4.43258 4.43209C4.22951 4.63516 4.22951 4.96441 4.43258 5.16748L8.86488 9.59979L4.43258 14.0321C4.22951 14.2352 4.22951 14.5644 4.43258 14.7675C4.63565 14.9706 4.9649 14.9706 5.16797 14.7675L9.60027 10.3352L14.0326 14.7675C14.2357 14.9706 14.5649 14.9706 14.768 14.7675C14.971 14.5644 14.971 14.2352 14.768 14.0321L10.3357 9.59979L14.768 5.16748C14.971 4.96441 14.971 4.63516 14.768 4.43209C14.5649 4.22902 14.2357 4.22902 14.0326 4.43209L9.60027 8.86439L5.16797 4.43209Z" stroke="#000001" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/>
-                        </g>
-                        <defs>
-                            <filter id="filter0_d_42378_20037" x="2.98047" y="2.97998" width="13.2402" height="13.2397" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                                <feOffset/>
-                                <feGaussianBlur stdDeviation="0.5"/>
-                                <feComposite in2="hardAlpha" operator="out"/>
-                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/>
-                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_42378_20037"/>
-                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_42378_20037" result="shape"/>
-                            </filter>
-                        </defs>
-                    </svg>
-                </button>
-                <video
-                        class="back-img-3"
-                        preload="auto"
-                        loop
-                        playsinline
-                        muted
-                        autoplay
-                >
-                    <source src="Balloons%20sky_loop.mp4" type="video/mp4" />
-                </video>
-                <svg width="176" height="423" viewBox="0 0 176 423" fill="none" xmlns="http://www.w3.org/2000/svg" class="left-ellipse">
-                    <g filter="url(#filter0_f_42667_20135)">
-                        <ellipse cx="98.1559" cy="157.375" rx="98.1559" ry="157.375" transform="matrix(0.780902 -0.624653 -0.624653 -0.780902 -1.39062 395.578)" fill="#FF626C"/>
-                    </g>
-                    <defs>
-                        <filter id="filter0_f_42667_20135" x="-221.706" y="0" width="397.323" height="422.74" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-                            <feGaussianBlur stdDeviation="37" result="effect1_foregroundBlur_42667_20135"/>
-                        </filter>
-                    </defs>
-                </svg>
-                <div class="gradient">
-                </div>
-                <svg width="231" height="503" viewBox="0 0 231 503" fill="none" xmlns="http://www.w3.org/2000/svg" class="right-ellipse">
-                    <g filter="url(#filter0_f_42667_20134)">
-                        <ellipse cx="252.758" cy="251.236" rx="161.41" ry="154.5" transform="rotate(38.6567 252.758 251.236)" fill="#FF626C"/>
-                    </g>
-                    <defs>
-                        <filter id="filter0_f_42667_20134" x="0" y="0" width="505.516" height="502.472" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-                            <feGaussianBlur stdDeviation="47" result="effect1_foregroundBlur_42667_20134"/>
-                        </filter>
-                    </defs>
-                </svg>
-                <div class="main-wrapper" id="main-wrapper-slide-3">
-                    <div
-                            id="optionsContainer"
-                            class="options-block"
-                    >
-                    <div id="output" class="pricing-toggle">
-                        <div class="skeleton">
-                            <div class="lg-skeletonBlock lg-1"></div>
-                            <div class="lg-skeletonBlock"></div>
-                        </div>
-                    </div>
-                    <div class="selected-price-value" id="selectedPrice">
-                    </div>
-                    <div class="links">
-                        <div class="terms-3" id="terms" onclick="window.webkit.messageHandlers.termsTapped.postMessage('')">Terms of Use</div>
-                        <div id="privacy" onclick="window.webkit.messageHandlers.privacyTapped.postMessage('')">Privacy Policy</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="theme-color" content="#101828">
+
+<title>Hair Planning Lab</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{
+
+ margin:0;
+
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+ background:#f5f7fa;
+
+ color:#17202a
+
+}
+
+header{
+
+ background:#101828;
+
+ color:white;
+
+ padding:22px 18px;
+
+ position:sticky;
+
+ top:0;
+
+ z-index:5
+
+}
+
+header h1{margin
