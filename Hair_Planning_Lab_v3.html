@@ -1,0 +1,79 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101318"><title>Hair Planning Lab v3</title>
+<style>
+body{margin:0;background:#f5f6f8;color:#15181d;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header{background:#101318;color:white;padding:18px}main{max-width:760px;margin:auto;padding:14px}.sub,.hint,small{color:#68717d;font-size:13px;line-height:1.45}.steps{display:flex;gap:6px;overflow:auto;margin-bottom:14px}.step{min-width:62px;padding:8px;border:1px solid #dfe3e8;border-radius:10px;background:white;font-size:11px;text-align:center}.active{background:#111318!important;color:white;border-color:#111318!important}.card{background:white;border:1px solid #dfe3e8;border-radius:16px;padding:16px;margin-bottom:12px}h1{margin:0;font-size:20px}h2{font-size:17px;margin:0 0 8px}h3{font-size:14px}button{border:0;border-radius:11px;background:#111318;color:white;padding:11px 13px;font-weight:650}button.secondary{background:#eef0f3;color:#17191d}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.capture{border:1px solid #dfe3e8;border-radius:13px;padding:10px}.capture strong{display:block;font-size:13px}.capture small{display:block;margin:5px 0 9px}.preview{margin-top:9px;background:#111;border-radius:12px;overflow:hidden}.preview img{width:100%;display:block}.badge{padding:6px;color:white;font-size:11px}.notice{padding:11px;border-radius:11px;background:#f1f3f5;font-size:12px;line-height:1.4;margin-top:10px}.result{display:grid;grid-template-columns:1fr 1fr;gap:9px}.metric{border:1px solid #dfe3e8;border-radius:12px;padding:12px}.metric b{display:block;font-size:20px}.metric span{font-size:11px;color:#68717d}.actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}input[type=text],input[type=number]{width:100%;padding:11px;border:1px solid #dfe3e8;border-radius:10px;font-size:14px;box-sizing:border-box}input[type=file]{display:none}@media(max-width:560px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<header><h1>Hair Planning Lab</h1><div class="sub">Planificación donante · prototipo v3</div></header><main><div class="steps" id="steps"></div>
+<section class="card" id="p1"><h2>1 · Identificar caso</h2><div class="hint">Usá un identificador del caso y evitá datos personales innecesarios.</div><h3>ID del caso</h3><input id="case" type="text" placeholder="Ej. HP-0001"><div class="actions"><button onclick="go(2)">Continuar →</button></div></section>
+<section class="card" id="p2" hidden><h2>2 · Captura estandarizada</h2><div class="hint">Tomá las tres fotografías manteniendo distancia, iluminación y posición constantes.</div><div class="grid" style="margin-top:12px">
+<div class="capture"><strong>① Lateral derecha</strong><small>Oreja derecha visible y toda la región temporal.</small><label><button onclick="pick('r')">📷 Cámara / Galería</button><input id="r" type="file" accept="image/*" capture="environment" onchange="photo('r','vr')"></label><div id="vr"></div></div>
+<div class="capture"><strong>② Posterior</strong><small>Nuca y occipital centrados; incluir ambos límites.</small><label><button onclick="pick('b')">📷 Cámara / Galería</button><input id="b" type="file" accept="image/*" capture="environment" onchange="photo('b','vb')"></label><div id="vb"></div></div>
+<div class="capture"><strong>③ Lateral izquierda</strong><small>Oreja izquierda visible y toda la región temporal.</small><label><button onclick="pick('l')">📷 Cámara / Galería</button><input id="l" type="file" accept="image/*" capture="environment" onchange="photo('l','vl')"></label><div id="vl"></div></div></div>
+<div class="notice">Objetivo: tres vistas comparables. La reconstrucción 3D/2.5D definitiva requerirá registro fotogramétrico entre vistas.</div><div class="actions"><button class="secondary" onclick="go(1)">← Atrás</button><button onclick="go(3)">Continuar →</button></div></section>
+<section class="card" id="p3" hidden><h2>3 · Escala y calibración</h2><div class="hint">La medición en cm² necesita una referencia de tamaño conocido en cada captura.</div><h3>Referencia</h3><input id="ref" type="number" value="1" min=".1" step=".1"><div class="notice">Para uso clínico se deberá incorporar un marcador estandarizado y controlar la geometría de captura.</div><div class="actions"><button class="secondary" onclick="go(2)">← Atrás</button><button onclick="go(4)">Continuar →</button></div></section>
+<section class="card" id="p4" hidden><h2>4 · Pintar zona donante</h2><div class="hint">El operador delimitará la zona donante directamente con el dedo sobre cada fotografía.</div><div class="notice">Módulo siguiente: pincel, borrador, zoom, deshacer y cálculo de superficie por vista.</div><div class="actions"><button class="secondary" onclick="go(3)">← Atrás</button><button onclick="go(5)">Continuar →</button></div></section>
+<section class="card" id="p5" hidden><h2>5 · Integración de tres vistas</h2><div class="hint">Las tres vistas deben registrarse para evitar doble conteo en las zonas de transición.</div><div class="result"><div class="metric"><b>3</b><span>vistas requeridas</span></div><div class="metric"><b>3D/2.5D</b><span>objetivo</span></div></div><div class="notice">En producción: fotogrametría multi-vista para iPhone sin LiDAR, con malla/mapa de superficie y control de calidad.</div><div class="actions"><button class="secondary" onclick="go(4)">← Atrás</button><button onclick="go(6)">Continuar →</button></div></section>
+<section class="card" id="p6" hidden><h2>6 · Muestreo de densidad</h2><div class="hint">Elegí 8, 10 o 12 muestras aleatorias de <b>1 cm²</b>, distribuidas entre derecha, posterior e izquierda.</div><div class="grid" style="margin-top:12px"><button onclick="samples(8)">8 muestras</button><button onclick="samples(10)">10 muestras</button><button onclick="samples(12)">12 muestras</button></div><div id="si" class="notice">Todavía no seleccionaste cantidad.</div><div class="actions"><button class="secondary" onclick="go(5)">← Atrás</button><button onclick="go(7)">Continuar →</button></div></section>
+<section class="card" id="p7" hidden><h2>7 · Conteo de UF</h2><div class="hint">Contar <b>unidades foliculares</b>, no simplemente pelos. La IA definitiva deberá entrenarse y validarse específicamente para este análisis.</div><div class="notice">En esta v3: corrección manual. La IA automática se integrará después con confianza y auditoría.</div><div id="counts"></div><div class="actions"><button class="secondary" onclick="go(6)">← Atrás</button><button onclick="calc()">Calcular stock →</button></div></section>
+<section class="card" id="p8" hidden><h2>8 · Stock de UF total</h2><div id="stock"></div><div class="notice">Estimación matemática: superficie donante global × UF/cm² media. No usar todavía para decisiones clínicas.</div><div class="actions"><button class="secondary" onclick="go(7)">← Volver</button><button onclick="go(9)">Extracción FUE →</button></div></section>
+<section class="card" id="p9" hidden><h2>9 · Porcentaje de extracción segura por técnica FUE</h2><div class="hint">Parámetro editable. Valor inicial: <b>30%</b>. No es un límite universal de seguridad.</div><h3>Porcentaje</h3><input id="ext" type="number" value="30" min="0" max="100" oninput="update()"><div id="er" class="result" style="margin-top:12px"></div><div class="actions"><button class="secondary" onclick="go(8)">← Atrás</button><button onclick="go(10)">Resumen →</button></div></section>
+<section class="card" id="p10" hidden><h2>10 · Resumen</h2><div id="sum"></div><div class="notice">La simulación a 12 meses será un módulo separado y se mostrará como estimación, no como garantía.</div><div class="actions"><button class="secondary" onclick="go(9)">← Atrás</button><button onclick="print()">🖨️ Guardar PDF</button></div></section>
+</main>
+<script>
+let S={n:10,c:[],density:0,area:200,stock:0};
+window.addEventListener('beforeunload',()=>{try{localStorage.setItem('hpl_case',document.getElementById('case')?.value||'')}catch(e){}});
+window.addEventListener('load',()=>{try{document.getElementById('case').value=localStorage.getItem('hpl_case')||''}catch(e){}});
+const labels=['Caso','Captura','Escala','Pintar','3 vistas','Muestras','UF','Stock','Extracción','Resumen'];
+function steps(n){document.getElementById('steps').innerHTML=labels.map((x,i)=>'<div class="step '+(i+1==n?'active':'')+'">'+(i+1)+'<br>'+x+'</div>').join('')}
+function go(n){
+  const current=[...document.querySelectorAll('section.card')].find(x=>!x.hidden);
+  const cur=current?Number(current.id.slice(1)):1;
+  if(n>cur && !validate(cur)) return;
+  for(let i=1;i<=10;i++)document.getElementById('p'+i).hidden=i!=n;
+  steps(n);
+  if(n==7)drawCounts();
+  if(n==9)update();
+  if(n==10)summary();
+  scrollTo({top:0,behavior:'smooth'});
+}
+function validate(n){
+  if(n===1){
+    if(!document.getElementById('case').value.trim()){
+      alert('Ingresá un ID de caso antes de continuar.'); return false;
+    }
+  }
+  if(n===2){
+    const missing=[];
+    if(!document.getElementById('r').files.length) missing.push('lateral derecha');
+    if(!document.getElementById('b').files.length) missing.push('posterior');
+    if(!document.getElementById('l').files.length) missing.push('lateral izquierda');
+    if(missing.length){
+      alert('Falta cargar: '+missing.join(', ')+'. Las 3 vistas son obligatorias.');
+      return false;
+    }
+  }
+  if(n===3){
+    if(!(Number(document.getElementById('ref').value)>0)){
+      alert('Ingresá una referencia de escala válida.'); return false;
+    }
+  }
+  if(n===6){
+    if(!S.n){
+      alert('Elegí 8, 10 o 12 muestras de 1 cm².'); return false;
+    }
+  }
+  if(n===7){
+    if(!S.c.length){
+      alert('Primero seleccioná la cantidad de muestras.'); return false;
+    }
+  }
+  return true;
+}
+steps(1);
+function pick(id){document.getElementById(id).click()}
+function photo(id,out){let f=document.getElementById(id).files[0];if(!f)return;let u=URL.createObjectURL(f);document.getElementById(out).innerHTML='<div class="preview"><img src="'+u+'"><div class="badge">Fotografía cargada ✓</div></div>'}
+function samples(n){S.n=n;S.c=Array(n).fill(0);let d=n==8?'3 derecha · 2 posterior · 3 izquierda':n==10?'3 derecha · 4 posterior · 3 izquierda':'4 derecha · 4 posterior · 4 izquierda';document.getElementById('si').innerHTML='<b>'+n+' muestras de 1 cm²</b><br>'+d+'<br>La posición aleatoria se generará dentro de la máscara pintada.'}
+function drawCounts(){document.getElementById('counts').innerHTML='<h3>UF por muestra</h3>'+S.c.map((v,i)=>'<div style="display:flex;gap:7px;margin:7px 0"><span style="width:75px;font-size:12px">Muestra '+(i+1)+'</span><input type="number" min="0" value="'+v+'" oninput="S.c['+i+']=Number(this.value)||0"></div>').join('')}
+function calc(){S.density=S.c.reduce((a,b)=>a+b,0)/S.c.length;S.stock=Math.round(S.area*S.density);document.getElementById('stock').innerHTML='<div class="result"><div class="metric"><b>'+S.stock.toLocaleString('es-AR')+'</b><span>stock de UF total estimado</span></div><div class="metric"><b>'+S.density.toFixed(1)+'</b><span>UF/cm² media</span></div></div>';go(8)}
+function update(){let p=Number(ext.value)||0,e=Math.round(S.stock*p/100),r=Math.max(0,S.stock-e);er.innerHTML='<div class="metric"><b>'+e.toLocaleString('es-AR')+'</b><span>UF extraíbles ('+p+'%)</span></div><div class="metric"><b>'+r.toLocaleString('es-AR')+'</b><span>UF remanentes estimadas</span></div>'}
+function summary(){let p=Number(ext.value)||30,e=Math.round(S.stock*p/100);sum.innerHTML='<div class="result"><div class="metric"><b>'+S.area+' cm²*</b><span>superficie global estimada</span></div><div class="metric"><b>'+S.density.toFixed(1)+'</b><span>UF/cm²</span></div><div class="metric"><b>'+S.stock.toLocaleString('es-AR')+'</b><span>stock de UF total</span></div><div class="metric"><b>'+e.toLocaleString('es-AR')+'</b><span>extracción configurada: '+p+'%</span></div></div><p class="hint">* Valor demostrativo en v3 hasta activar calibración, máscara y fotogrametría real.</p>'}
+</script></body></html>
