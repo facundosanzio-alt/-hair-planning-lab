@@ -34,7 +34,8 @@ function go(n){
   if(n>cur && !validate(cur)) return;
   for(let i=1;i<=10;i++)document.getElementById('p'+i).hidden=i!=n;
   steps(n);
-  if(n==4)renderPaint();\n  if(n==7)drawCounts();
+  if(n==4)renderPaint();
+  if(n==7)drawCounts();
   if(n==9)update();
   if(n==10)summary();
   scrollTo({top:0,behavior:'smooth'});
